@@ -16,33 +16,102 @@
     <div id="app">
         <div id="header-propic" class="container border mt-3">
             <div class="row">
-                <div class="col-4 d-flex justify-content-between p-2 border-end border-2">
-                    <div class="d-flex align-items-center">
-                        <figure>
-                            <img class="rounded-circle" src="./assets/img/avatar_io.jpg" alt="propic">
-                        </figure>
-                        <h3 class="text-capitalize">sofia</h3>
-                    </div>
-                    <div class="d-flex align-items-center gap-2 opacity-50">
-                        <i class="bi bi-clock-history"></i>
-                        <i class="bi bi-chat-left-fill"></i>
-                        <i class="bi bi-three-dots-vertical"></i>
-                    </div>
-                </div>
-                <div class="col-8 d-flex justify-content-between p-2">
-                    <div class="d-flex align-items-center">
-                        <figure>
-                            <img class="rounded-circle" src="" alt="chat-profile-pic">
-                        </figure>
-                        <div class="d-flex flex-column">
-                            <span class="text-capitalize fw-semibold"></span>
-                            <span class="text-capitalize"></span>
+
+                <!-- List Contacts section -->
+                <div class="col-4 px-0">
+
+                    <!-- Header -->
+                    <div class="d-flex justify-content-between p-2 border-end border-2">
+                        <div class="d-flex align-items-center">
+                            <figure>
+                                <img class="rounded-circle" src="./assets/img/avatar_io.jpg" alt="propic">
+                            </figure>
+                            <h3 class="text-capitalize">sofia</h3>
+                        </div>
+
+                        <div class="d-flex align-items-center gap-2 opacity-50">
+                            <i class="bi bi-clock-history"></i>
+                            <i class="bi bi-chat-left-fill"></i>
+                            <i class="bi bi-three-dots-vertical"></i>
                         </div>
                     </div>
-                    <div class="d-flex align-items-center gap-2 opacity-50">
-                        <i class="bi bi-search"></i>
-                        <i class="bi bi-paperclip"></i>
-                        <i class="bi bi-three-dots-vertical"></i>
+
+                    <!-- Notifications alert -->
+                    <div id="alert-new-messages">
+                        <div class="d-flex align-items-center gap-2 p-3">
+                            <figure class="bg-white rounded-circle">
+                                <svg width="25" height="25" fill="#8EDAFC" class="bi bi-bell-slash-fill"
+                                    viewBox="0 0 16 16">
+                                    <path
+                                        d="M5.164 14H15c-1.5-1-2-5.902-2-7q0-.396-.06-.776zm6.288-10.617A5 5 0 0 0 8.995 2.1a1 1 0 1 0-1.99 0A5 5 0 0 0 3 7c0 .898-.335 4.342-1.278 6.113zM10 15a2 2 0 1 1-4 0zm-9.375.625a.53.53 0 0 0 .75.75l14.75-14.75a.53.53 0 0 0-.75-.75z" />
+                                </svg>
+                            </figure>
+                            <div class="d-flex flex-column lh-sm">
+                                <span class="fw-semibold name">Ricevi notifiche di nuovi
+                                    messaggi</span>
+                                <a class="after-name" href="">Attiva notifiche desktop</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Search bar -->
+                    <div class="input-group p-1">
+                        <span class="input-group-text" id="basic-addon1"><i class="bi bi-search"></i></span>
+                        <input type="text" class="form-control" placeholder="Cerca o inizia una nuova chat"
+                            aria-label="search" aria-describedby="basic-addon1">
+                    </div>
+
+                    <!-- Contacts -->
+                    <div class="bg-white">
+                        <div v-for="element in contacts" class="border-bottom">
+                            <div class="d-flex justify-content-between p-2">
+                                <div class="d-flex align-items-center gap-2">
+                                    <figure>
+                                        <img class="rounded-circle" :src="element.avatar" alt="chat-profile-pic">
+                                    </figure>
+                                    <div class="d-flex flex-column lh-sm">
+                                        <span class="text-capitalize fw-semibold name">{{element.name}}</span>
+                                        <span id="last-message-contacts"
+                                            class="after-name">{{element.messages[element.messages.length -
+                                            1].message}}</span>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex align-items-start gap-2 opacity-50 after-name">
+                                    {{displayLastDate(element.messages[element.messages.length -
+                                    1].date)}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <!-- Chat section -->
+                <div class="col-8 px-0">
+
+                    <!-- Header -->
+                    <div class="d-flex justify-content-between p-2">
+                        <div class="d-flex align-items-center gap-2">
+                            <figure>
+                                <img class="rounded-circle" src="./assets/img/avatar_1.jpg" alt="chat-profile-pic">
+                            </figure>
+                            <div class="d-flex flex-column lh-sm">
+                                <span class="text-capitalize fw-semibold name">Michele</span>
+                                <span class="text-capitalize after-name">Ultimo accesso</span>
+                            </div>
+                        </div>
+
+                        <div class="d-flex align-items-center gap-2 opacity-50">
+                            <i class="bi bi-search"></i>
+                            <i class="bi bi-paperclip"></i>
+                            <i class="bi bi-three-dots-vertical"></i>
+                        </div>
+                    </div>
+
+                    <div id="chat-background">
+
                     </div>
                 </div>
             </div>

@@ -20,3 +20,37 @@ figure img {
 i:hover {
     cursor: pointer;
 }
+
+.name {
+    font-size: 18px;
+}
+
+.after-name {
+    font-size: 14px;
+}
+
+#alert-new-messages {
+    background-color: #8EDAFC;
+}
+
+#alert-new-messages i {
+    color: #8EDAFC;
+}
+
+#alert-new-messages figure {
+    padding: 10px;
+}
+
+#chat-background {
+    background-image: url('../img/mine.jpg');
+    height: calc(100% - 66px);
+}
+
+#last-message-contacts {
+
+    text-wrap: nowrap;
+    text-overflow: ellipsis;
+    max-width: 250px;
+    overflow: hidden;
+
+}
