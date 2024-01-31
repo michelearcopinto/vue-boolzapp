@@ -19,7 +19,11 @@ h3 {
 }
 
 #overflow-contacts {
-    height: calc(90vh - 182.5px);
+    height: calc(90vh - 190.5px);
+}
+
+#overflow-contacts>div:hover {
+    opacity: 75%;
 }
 
 figure img {
@@ -64,11 +68,40 @@ i:hover,
     width: 45%;
 }
 
-.message-box span:nth-child(2) {
+.message-box>span:nth-child(2) {
     font-size: 12px;
     position: absolute;
     right: 5px;
     bottom: 2px;
+}
+
+.message-box>i {
+    display: none;
+    font-size: 12px;
+    position: absolute;
+    right: 7px;
+    top: 8px;
+    opacity: 50%;
+}
+
+.message-box:hover>i {
+    display: block;
+}
+
+.message-box>i:hover {
+    opacity: 100%;
+}
+
+.message-dropdown {
+    background-color: #FFFFFF;
+    position: absolute;
+    top: 30px;
+    right: 8px;
+    z-index: 1;
+}
+
+.message-dropdown span:hover {
+    cursor: pointer;
 }
 
 .message-box-sent {
@@ -93,14 +126,6 @@ i:hover,
 .bi-arrow-left-short::before {
     display: none;
 }
-
-/* #offcanvas-contacts {
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    z-index: 1;
-} */
 
 @media screen and (max-width: 1399px) {
 
@@ -133,6 +158,10 @@ i:hover,
     #last-message-contacts {
         max-width: 200px;
     }
+
+    #overflow-contacts {
+        height: calc(90vh - 206.5px);
+    }
 }
 
 @media screen and (max-width: 991px) {
@@ -142,7 +171,7 @@ i:hover,
     }
 
     #last-message-contacts {
-        max-width: 130px;
+        max-width: 120px;
     }
 }
 

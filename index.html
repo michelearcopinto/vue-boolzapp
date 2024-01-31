@@ -16,9 +16,6 @@
     <div id="app" class="pt-5">
         <div id="header-propic" class="container border shadow-lg rounded-3 overflow-hidden position-relative">
 
-            <!--             <div id="offcanvas-contacts" class="bg-black">
-                Ciao come stai
-            </div> -->
             <div class="row">
 
                 <!-- List Contacts section -->
@@ -67,8 +64,8 @@
                     </div>
 
                     <!-- Contacts -->
-                    <div id="overflow-contacts" @click="closeLeftMenu()" class="overflow-auto">
-                        <div v-for="(element, index) in contacts" @click="setChat(index)"
+                    <div id="overflow-contacts" class="overflow-auto">
+                        <div v-for="(element, index) in contacts" @click="setChat(index); closeLeftMenu()"
                             v-show="element.name.toLowerCase().trim().includes(searchWord.toLowerCase().trim())"
                             :class="index === currentChat ? '' : 'bg-white'">
                             <div class="border-bottom chat-box">
@@ -78,18 +75,15 @@
                                             <img class="rounded-circle" :src="element.avatar" alt="chat-profile-pic">
                                         </figure>
                                         <div class="d-flex flex-column lh-sm">
-                                            <span class="text-capitalize fw-semibold name">{{element.name}}</span>
-                                            <span id="last-message-contacts" v-html="element.messages[element.messages.length -
-                                            1].status === 'sent' ? `<strong>Inviato:</strong> ${element.messages[element.messages.length
-                                            -
-                                            1].message}` : element.messages[element.messages.length -
-                                            1].message" class="after-name text-truncate"></span>
+                                            <span
+                                                class="text-capitalize fw-semibold name user-select-none">{{element.name}}</span>
+                                            <span id="last-message-contacts" v-html="lastMessageCheck(index)"
+                                                class="after-name text-truncate user-select-none"></span>
                                         </div>
                                     </div>
 
-                                    <div class="d-flex align-items-start gap-2 opacity-50 after-name">
-                                        {{displayLastDate(element.messages[element.messages.length -
-                                        1].date)}}
+                                    <div class="d-flex align-items-start gap-2 opacity-50 after-name user-select-none">
+                                        {{lastDateCheck(index)}}
                                     </div>
                                 </div>
                             </div>
@@ -110,11 +104,9 @@
                                 <img class="rounded-circle" :src="contacts[currentChat].avatar" alt="chat-profile-pic">
                             </figure>
                             <div class="d-flex flex-column lh-sm">
-                                <span class="text-capitalize fw-semibold name">{{contacts[currentChat].name}}</span>
-                                <span class="after-name opacity-75">{{isWriting === false ?
-                                    'Ultimo accesso alle ' +
-                                    displayLastDate(contacts[currentChat].messages[contacts[currentChat].messages.length
-                                    - 1].date) : 'Sta scrivendo...'}}</span>
+                                <span
+                                    class="text-capitalize fw-semibold name user-select-none">{{contacts[currentChat].name}}</span>
+                                <span class="after-name opacity-75 user-select-none">{{isWritingCheck()}}</span>
                             </div>
                         </div>
 
@@ -126,12 +118,21 @@
                     </div>
 
                     <!-- Chat area -->
-                    <div id="chat-background" class="overflow-auto pt-5 pb-3 position-relative">
-                        <div v-for="element in contacts[currentChat].messages" class="w-75 mx-auto pt-2">
-                            <div class="d-flex flex-column message-box rounded-2 shadow-lg position-relative"
+                    <div id="chat-background" class="overflow-auto pt-5 pb-3 position-relative"
+                        @click="closeLeftMenu()">
+                        <div v-for="(element, index) in contacts[currentChat].messages" class="w-75 mx-auto pt-2">
+                            <div class="d-flex flex-column message-box rounded-2 shadow-sm position-relative"
                                 :class="element.status === 'sent' ? 'message-box-sent' : 'message-box-received'">
-                                <span class="pt-2 p-3 pb-4">{{element.message}}</span>
-                                <span class="opacity-50">{{displayLastDate(element.date)}}</span>
+                                <span class="pt-2 p-3 pb-4 pe-4">{{element.message}}</span>
+                                <span class="opacity-50 user-select-none">{{displayLastDate(element.date)}}</span>
+                                <i @click="setDisplayBox(index)" class="bi bi-chevron-down fs-6"></i>
+                                <div class="flex-column gap-2 ps-4 p-3 rounded-1 shadow-lg message-dropdown"
+                                    :class="currentBox === index ? 'd-flex' : 'd-none'">
+                                    <span @click="copyMessage(index)" class="user-select-none">Copia messaggio</span>
+                                    <span @click="deleteMessage(index)" class="user-select-none">Elimina
+                                        messaggio</span>
+                                    <span @click="" class="user-select-none">Info messaggio</span>
+                                </div>
                             </div>
                         </div>
 
@@ -142,9 +143,9 @@
                     <div id="text-area" class="d-flex align-items-center gap-4 px-4">
                         <i class="bi bi-emoji-smile-upside-down fs-3"></i>
                         <div class="input-group p-1">
-                            <input v-model="newMessage" @keydown.enter="pushMessage()" type="text"
+                            <input id="inputMessage" v-model="newMessage" @keydown.enter="pushMessage()" type="text"
                                 class="form-control shadow-none" placeholder="Scrivi un messaggio" aria-label="search"
-                                aria-describedby="basic-addon1">
+                                aria-describedby="basic-addon1" :class="leftMenu === true ? 'pe-none' : ''">
                         </div>
                         <i v-if="newMessage === ''" class="bi bi-mic fs-3"></i>
                         <i v-else @click="pushMessage()" class="bi bi-send fs-3"></i>

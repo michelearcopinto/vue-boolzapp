@@ -6,9 +6,10 @@ const app = createApp({
             currentChat: 0,
             isWriting: false,
             leftMenu: false,
+            currentBox: null,
             newMessage: '',
-            userMessage: '',
             searchWord: '',
+            lastRecordedDate: '',
             contacts: [
                 {
                     name: 'Michele',
@@ -273,8 +274,7 @@ const app = createApp({
                 "Non ho tempo per questo.",
                 "Voglio andare a casa.",
                 "Non so cosa dire."
-            ],
-            OPENAI_API_KEY: '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'
+            ]
         }
     },
     created() {
@@ -302,7 +302,7 @@ const app = createApp({
 
             this.currentChat = index;
         },
-        async pushMessage() {
+        pushMessage() {
 
             if (this.newMessage === '') {
 
@@ -322,18 +322,15 @@ const app = createApp({
                 status: 'sent'
             })
 
-            this.userMessage = this.newMessage;
             this.newMessage = '';
 
             this.isWriting = !this.isWriting;
-
-            const receivedMessage = await this.getMessage();
 
             setTimeout(() => {
 
                 this.contacts[this.currentChat].messages.push({
                     date: `${ore}:${minuti}`,
-                    message: receivedMessage,
+                    message: this.answers[this.getRandomNumber(0, 99)],
                     status: 'received'
                 });
 
@@ -344,29 +341,6 @@ const app = createApp({
         getRandomNumber(min, max) {
 
             return Math.floor(Math.random() * (max - min) + min);
-        },
-        async getMessage() {
-
-            const options = {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${this.OPENAI_API_KEY}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    model: 'gpt-3.5-turbo',
-                    messages: [{ role: 'user', content: this.userMessage }],
-                    max_tokens: 100
-                })
-            }
-            try {
-                const response = await fetch('https://api.openai.com/v1/chat/completions', options);
-                const data = await response.json();
-                return data.choices[0].message.content;
-
-            } catch (error) {
-                console.log(error);
-            }
         },
         preventSpace() {
 
@@ -379,6 +353,91 @@ const app = createApp({
         closeLeftMenu() {
 
             this.leftMenu = false;
+        },
+        setDisplayBox(index) {
+
+            this.currentBox === null ? this.currentBox = index : this.currentBox = null;
+        },
+        copyMessage(index) {
+
+            let copiedMessage = this.contacts[this.currentChat].messages[index].message;
+            navigator.clipboard.writeText(copiedMessage);
+
+            this.currentBox = null;
+
+            setTimeout(() => {
+
+                alert('Messaggio copiato!')
+            }, 1);
+        },
+        deleteMessage(index) {
+
+            this.contacts[this.currentChat].messages.splice(index, 1);
+
+            this.currentBox = null;
+        },
+        lastMessageCheck(index) {
+
+            const currentChatMessages = this.contacts[index].messages;
+
+            if (currentChatMessages.length === 0) {
+
+                return 'Messaggi eliminati';
+
+            } else {
+
+                const lastMessage = currentChatMessages[currentChatMessages.length - 1];
+
+                if (lastMessage.status === 'sent') {
+
+                    return `<strong>Inviato:</strong> ${lastMessage.message}`;
+
+                } else {
+
+                    return lastMessage.message;
+                }
+            }
+        },
+        lastDateCheck(index) {
+
+            const currentDateMessages = this.contacts[index].messages;
+
+            if (currentDateMessages.length === 0) {
+
+                return '';
+
+            } else {
+
+                const lastDate = currentDateMessages[currentDateMessages.length - 1];
+
+                return this.displayLastDate(lastDate.date);
+            }
+
+        },
+        isWritingCheck() {
+
+            let receivedMessages = this.contacts[this.currentChat].messages.filter(function (element) {
+                return element.status === 'received';
+            });
+
+            if (this.isWriting === false) {
+
+                if (receivedMessages.length === 0) {
+
+                    return `Ultimo accesso alle ${this.displayLastDate(this.lastRecordedDate)}`
+
+                } else {
+
+                    let lastReceivedDate = receivedMessages[receivedMessages.length - 1].date;
+                    this.lastRecordedDate = lastReceivedDate;
+                    return `Ultimo accesso alle ${this.displayLastDate(lastReceivedDate)}`;
+                }
+
+            } else {
+
+                return 'Sta scrivendo...'
+            }
+
         }
     }
 }).mount('#app')
