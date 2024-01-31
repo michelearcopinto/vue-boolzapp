@@ -18,6 +18,10 @@ h3 {
     height: 90vh;
 }
 
+#overflow-contacts {
+    height: calc(90vh - 182.5px);
+}
+
 figure img {
     width: 50px;
 }
