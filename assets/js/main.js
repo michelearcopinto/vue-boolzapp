@@ -4,9 +4,9 @@ const app = createApp({
     data() {
         return {
             currentChat: 0,
-            answerChance: 0,
             isWriting: false,
             newMessage: '',
+            userMessage: '',
             contacts: [
                 {
                     name: 'Michele',
@@ -271,7 +271,8 @@ const app = createApp({
                 "Non ho tempo per questo.",
                 "Voglio andare a casa.",
                 "Non so cosa dire."
-            ]
+            ],
+            OPENAI_API_KEY: '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'
         }
     },
     created() {
@@ -299,7 +300,12 @@ const app = createApp({
 
             this.currentChat = index;
         },
-        pushMessage() {
+        async pushMessage() {
+
+            if (this.newMessage === '') {
+
+                return
+            }
 
             let ore = new Date().getHours();
             let minuti = new Date().getMinutes();
@@ -314,32 +320,51 @@ const app = createApp({
                 status: 'sent'
             })
 
-            this.answerChance = this.getRandomNumber(0, 3).toFixed(0);
+            this.userMessage = this.newMessage;
+            this.newMessage = '';
 
-            if (this.answerChance > 0) {
+            this.isWriting = !this.isWriting;
+
+            const receivedMessage = await this.getMessage();
+
+            setTimeout(() => {
+
+                this.contacts[this.currentChat].messages.push({
+                    date: `${ore}:${minuti}`,
+                    message: receivedMessage,
+                    status: 'received'
+                });
 
                 this.isWriting = !this.isWriting;
 
-                setTimeout(() => {
-
-                    this.contacts[this.currentChat].messages.push({
-
-                        date: `${ore}:${minuti}`,
-                        message: this.answers[this.getRandomNumber(0, 99).toFixed(0)],
-                        status: 'received'
-                    })
-
-                    this.isWriting = !this.isWriting;
-
-                }, this.getRandomNumber(1500, 3500).toFixed(0));
-
-            }
-
-            this.newMessage = '';
+            }, this.getRandomNumber(1500, 3500));
         },
         getRandomNumber(min, max) {
 
-            return Math.random() * (max - min) + min;
+            return Math.floor(Math.random() * (max - min) + min);
+        },
+        async getMessage() {
+
+            const options = {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${this.OPENAI_API_KEY}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    model: 'gpt-3.5-turbo',
+                    messages: [{ role: 'user', content: this.userMessage }],
+                    max_tokens: 100
+                })
+            }
+            try {
+                const response = await fetch('https://api.openai.com/v1/chat/completions', options);
+                const data = await response.json();
+                return data.choices[0].message.content;
+
+            } catch (error) {
+                console.log(error);
+            }
         }
     }
 }).mount('#app')
