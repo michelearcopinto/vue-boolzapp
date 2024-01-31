@@ -273,7 +273,7 @@ const app = createApp({
                 "Voglio andare a casa.",
                 "Non so cosa dire."
             ],
-            OPENAI_API_KEY: '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'
+            OPENAI_API_KEY: ''
         }
     },
     created() {
