@@ -4,6 +4,8 @@ const app = createApp({
     data() {
         return {
             currentChat: 0,
+            answerChance: 0,
+            newMessage: '',
             contacts: [
                 {
                     name: 'Michele',
@@ -166,6 +168,108 @@ const app = createApp({
                         }
                     ],
                 }
+            ],
+            answers: [
+                "Sì, esatto!",
+                "No, mi dispiace.",
+                "Grazie mille!",
+                "Non ne sono sicuro.",
+                "Davvero?",
+                "Interessante.",
+                "Non ho idea.",
+                "Ci sentiamo più tardi.",
+                "Ok, capisco.",
+                "Perfetto!",
+                "Mi manchi.",
+                "Non posso ora.",
+                "Fa niente.",
+                "Ho bisogno di più informazioni.",
+                "Ho fame.",
+                "Non so cosa dire.",
+                "Posso chiamarti?",
+                "Sto ridendo.",
+                "È triste.",
+                "Mi piacerebbe.",
+                "Odio quando succede.",
+                "Sarà divertente!",
+                "Grazie per l'informazione.",
+                "Come stai?",
+                "Non ho tempo.",
+                "Sto lavorando.",
+                "Buona fortuna!",
+                "Non vedo l'ora.",
+                "Ti amo.",
+                "Ho paura.",
+                "Non mi piace.",
+                "È fantastico!",
+                "Non sono d'accordo.",
+                "Che bello!",
+                "Ci vediamo presto.",
+                "Mi annoio.",
+                "Congratulazioni!",
+                "Mi sento male.",
+                "Fai attenzione.",
+                "Ho freddo.",
+                "Hai ragione.",
+                "Non riesco a credere.",
+                "Non ho soldi.",
+                "Voglio dormire.",
+                "Mi hai fatto ridere.",
+                "Non ho capito.",
+                "Ti prego.",
+                "Cosa ne pensi?",
+                "Puoi aiutarmi?",
+                "Non posso aspettare.",
+                "Non mi interessa.",
+                "Sarà difficile.",
+                "Stai scherzando?",
+                "Ho fame.",
+                "Grazie per la tua comprensione.",
+                "Puoi ripetere?",
+                "Ho troppo da fare.",
+                "È troppo complicato.",
+                "Voglio un abbraccio.",
+                "Non sono sicuro di poter farlo.",
+                "Sono stanco.",
+                "Mi piacerebbe saperne di più.",
+                "Speriamo bene.",
+                "Non ci credo.",
+                "Sono felice per te.",
+                "Non so cosa fare.",
+                "Sarà divertente!",
+                "Ho bisogno di una pausa.",
+                "Sei pazzo!",
+                "Non preoccuparti.",
+                "Fa caldo.",
+                "Ho bisogno di te.",
+                "È noioso.",
+                "Non sono d'accordo con te.",
+                "Non vedo l'ora.",
+                "Speriamo che tutto vada bene.",
+                "Cosa vuoi dire?",
+                "Non posso farlo.",
+                "Sono in ritardo.",
+                "Non so come rispondere.",
+                "Ho paura del futuro.",
+                "Non mi piace per niente.",
+                "Ti prego, smettila.",
+                "È incredibile!",
+                "Mi dispiace sentirlo.",
+                "È troppo lontano.",
+                "Sono confuso.",
+                "Posso chiamarti più tardi?",
+                "È ridicolo!",
+                "Non lo so, chiedi a qualcun altro.",
+                "Ho bisogno di vacanze.",
+                "Non ne posso più.",
+                "Mi manca qualcosa.",
+                "È così ingiusto.",
+                "Posso fidarmi di te?",
+                "Ho una sorpresa per te.",
+                "Non mi interessa affatto.",
+                "Non ho tempo per questo.",
+                "Voglio andare a casa.",
+                "Non so cosa dire."
             ]
         }
     },
@@ -175,16 +279,59 @@ const app = createApp({
     methods: {
         displayLastDate(date) {
 
-            let fullDateArray = date.split(' ');
-            let fullTime = fullDateArray.slice(1)[0];
-            let timeArray = fullTime.split(':');
-            let shortTime = timeArray.slice(0, 2).join(':');
+            if (date.includes(' ')) {
 
-            return shortTime
+                let fullDateArray = date.split(' ');
+                let fullTime = fullDateArray.slice(1)[0];
+                let timeArray = fullTime.split(':');
+                let shortTime = timeArray.slice(0, 2).join(':');
+
+                return shortTime;
+
+            } else {
+
+                return date;
+            }
+
         },
         setChat(index) {
 
             this.currentChat = index;
+        },
+        pushMessage() {
+
+            let ore = new Date().getHours();
+            let minuti = new Date().getMinutes();
+
+            ore = +ore < 10 ? '0' + ore : ore
+            minuti = +minuti < 10 ? '0' + minuti : minuti
+
+            this.contacts[this.currentChat].messages.push({
+
+                date: `${ore}:${minuti}`,
+                message: this.newMessage,
+                status: 'sent'
+            })
+
+            this.answerChance = this.getRandomNumber(0, 1).toFixed(0);
+
+            if (this.answerChance == 0) {
+
+                this.contacts[this.currentChat].messages.push({
+
+                    date: `${ore}:${minuti}`,
+                    message: this.answers[this.getRandomNumber(0, 99).toFixed(0)],
+                    status: 'received'
+                })
+            }
+
+            this.newMessage = '';
+            console.log(this.getRandomNumber(0, 99));
+            console.log(this.answerChance);
+        },
+        getRandomNumber(min, max) {
+
+            return Math.random() * (max - min) + min;
         }
     }
 }).mount('#app')

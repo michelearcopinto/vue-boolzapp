@@ -13,12 +13,12 @@
 </head>
 
 <body>
-    <div id="app">
-        <div id="header-propic" class="container border mt-3 shadow-lg">
+    <div id="app" class="pt-4">
+        <div id="header-propic" class="container border shadow-lg">
             <div class="row">
 
                 <!-- List Contacts section -->
-                <div class="col-4 px-0">
+                <div id="contacts-list" class="col-4 px-0">
 
                     <!-- Header -->
                     <div class="d-flex justify-content-between p-2 border-end border-2">
@@ -72,9 +72,11 @@
                                     </figure>
                                     <div class="d-flex flex-column lh-sm">
                                         <span class="text-capitalize fw-semibold name">{{element.name}}</span>
-                                        <span id="last-message-contacts"
-                                            class="after-name">{{element.messages[element.messages.length -
-                                            1].message}}</span>
+                                        <span id="last-message-contacts" v-html="element.messages[element.messages.length -
+                                        1].status === 'sent' ? `<strong>Inviato:</strong> ${element.messages[element.messages.length
+                                        -
+                                        1].message}` : element.messages[element.messages.length -
+                                        1].message" class="after-name"></span>
                                     </div>
                                 </div>
 
@@ -100,7 +102,7 @@
                             </figure>
                             <div class="d-flex flex-column lh-sm">
                                 <span class="text-capitalize fw-semibold name">{{contacts[currentChat].name}}</span>
-                                <span class="text-capitalize after-name">Ultimo accesso alle
+                                <span class="text-capitalize after-name opacity-75">Ultimo accesso alle
                                     {{displayLastDate(contacts[currentChat].messages[contacts[currentChat].messages.length
                                     - 1].date)}}</span>
                             </div>
@@ -113,7 +115,8 @@
                         </div>
                     </div>
 
-                    <div id="chat-background" class="pt-5">
+                    <!-- Chat area -->
+                    <div id="chat-background" class="overflow-auto pt-5">
                         <div v-for="element in contacts[currentChat].messages" class="w-75 mx-auto pt-2">
                             <div class="d-flex flex-column message-box rounded-2 shadow-lg"
                                 :class="element.status === 'sent' ? 'message-box-sent' : 'message-box-received'">
@@ -123,8 +126,15 @@
                         </div>
 
                     </div>
-                    <div id="text-area" class="d-flex align-items-center">
-                        <i class="bi bi-emoji-smile-upside-down"></i>
+
+                    <!-- Text area -->
+                    <div id="text-area" class="d-flex align-items-center gap-4 px-4">
+                        <i class="bi bi-emoji-smile-upside-down fs-3"></i>
+                        <div class="input-group p-1">
+                            <input v-model="newMessage" @keydown.enter="pushMessage()" type="text" class="form-control"
+                                placeholder="Scrivi un messaggio" aria-label="search" aria-describedby="basic-addon1">
+                        </div>
+                        <i class="bi bi-mic fs-3"></i>
                     </div>
                 </div>
             </div>

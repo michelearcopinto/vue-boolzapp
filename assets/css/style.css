@@ -11,6 +11,11 @@ h3 {
 
 #header-propic {
     background-color: #EAEAEA;
+    height: 90vh;
+}
+
+#contacts-list {
+    height: 90vh;
 }
 
 figure img {
@@ -44,7 +49,7 @@ i:hover,
 
 #chat-background {
     background-image: url('../img/mine.jpg');
-    height: calc(100% - 132px);
+    height: calc(90vh - 134px);
     position: relative;
 }
 
