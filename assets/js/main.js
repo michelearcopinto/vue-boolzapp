@@ -7,6 +7,7 @@ const app = createApp({
             isWriting: false,
             newMessage: '',
             userMessage: '',
+            searchWord: '',
             contacts: [
                 {
                     name: 'Michele',
@@ -272,7 +273,7 @@ const app = createApp({
                 "Voglio andare a casa.",
                 "Non so cosa dire."
             ],
-            OPENAI_API_KEY: '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'
+            OPENAI_API_KEY: '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'
         }
     },
     created() {
@@ -365,6 +366,10 @@ const app = createApp({
             } catch (error) {
                 console.log(error);
             }
+        },
+        preventSpace() {
+
+            this.searchWord.startsWith(' ') ? this.searchWord = '' : this.searchWords
         }
     }
 }).mount('#app')

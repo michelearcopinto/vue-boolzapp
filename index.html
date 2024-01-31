@@ -57,13 +57,15 @@
                     <!-- Search bar -->
                     <div class="input-group p-1">
                         <span class="input-group-text" id="basic-addon1"><i class="bi bi-search"></i></span>
-                        <input type="text" class="form-control" placeholder="Cerca o inizia una nuova chat"
-                            aria-label="search" aria-describedby="basic-addon1">
+                        <input v-model="searchWord" @keyup="preventSpace()" type="text" class="form-control"
+                            placeholder="Cerca o inizia una nuova chat" aria-label="search"
+                            aria-describedby="basic-addon1">
                     </div>
 
                     <!-- Contacts -->
                     <div id="overflow-contacts" class="overflow-auto">
                         <div v-for="(element, index) in contacts" @click="setChat(index)"
+                            v-show="element.name.toLowerCase().trim().includes(searchWord.toLowerCase().trim())"
                             :class="index === currentChat ? '' : 'bg-white'">
                             <div class="border-bottom chat-box">
                                 <div class="d-flex justify-content-between p-2">
@@ -137,7 +139,8 @@
                             <input v-model="newMessage" @keydown.enter="pushMessage()" type="text" class="form-control"
                                 placeholder="Scrivi un messaggio" aria-label="search" aria-describedby="basic-addon1">
                         </div>
-                        <i class="bi bi-mic fs-3"></i>
+                        <i v-if="newMessage === ''" class="bi bi-mic fs-3"></i>
+                        <i v-else @click="pushMessage()" class="bi bi-send fs-3"></i>
                     </div>
                 </div>
             </div>
