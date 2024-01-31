@@ -5,6 +5,7 @@ const app = createApp({
         return {
             currentChat: 0,
             isWriting: false,
+            leftMenu: false,
             newMessage: '',
             userMessage: '',
             searchWord: '',
@@ -273,7 +274,7 @@ const app = createApp({
                 "Voglio andare a casa.",
                 "Non so cosa dire."
             ],
-            OPENAI_API_KEY: ''
+            OPENAI_API_KEY: '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'
         }
     },
     created() {
@@ -370,6 +371,14 @@ const app = createApp({
         preventSpace() {
 
             this.searchWord.startsWith(' ') ? this.searchWord = '' : this.searchWords
+        },
+        openLeftMenu() {
+
+            this.leftMenu = true;
+        },
+        closeLeftMenu() {
+
+            this.leftMenu = false;
         }
     }
 }).mount('#app')

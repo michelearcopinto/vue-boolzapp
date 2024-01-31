@@ -54,18 +54,13 @@ i:hover,
 #chat-background {
     background-image: url('../img/mine.jpg');
     height: calc(90vh - 134px);
-    position: relative;
 }
 
 #last-message-contacts {
-    text-wrap: nowrap;
-    text-overflow: ellipsis;
-    max-width: 250px;
-    overflow: hidden;
+    max-width: 300px;
 }
 
 .message-box {
-    position: relative;
     width: 45%;
 }
 
@@ -89,4 +84,95 @@ i:hover,
 #text-area {
     height: 66px;
     background-color: #F3EEEA;
+}
+
+.form-control:focus {
+    border-color: black;
+}
+
+.bi-arrow-left-short::before {
+    display: none;
+}
+
+/* #offcanvas-contacts {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 1;
+} */
+
+@media screen and (max-width: 1399px) {
+
+    .message-box {
+        width: 55%;
+    }
+
+    #last-message-contacts {
+        max-width: 250px;
+    }
+}
+
+@media screen and (max-width: 1199px) {
+
+    .message-box {
+        width: 60%;
+    }
+
+    #last-message-contacts {
+        max-width: 200px;
+    }
+}
+
+@media screen and (max-width: 1199px) {
+
+    .message-box {
+        width: 70%;
+    }
+
+    #last-message-contacts {
+        max-width: 200px;
+    }
+}
+
+@media screen and (max-width: 991px) {
+
+    .message-box {
+        width: 80%;
+    }
+
+    #last-message-contacts {
+        max-width: 130px;
+    }
+}
+
+@media screen and (max-width: 767px) {
+
+    .message-box {
+        width: 80%;
+    }
+
+    #last-message-contacts {
+        max-width: 170px;
+    }
+
+    #contacts-list {
+        position: absolute;
+        z-index: 1;
+        background-color: #EAEAEA;
+        width: 300px;
+        display: none;
+    }
+
+    #chat-section {
+        width: 100%;
+    }
+
+    .bi-arrow-left-short::before {
+        display: block;
+    }
+
+    .bi-arrow-left-short::before:hover {
+        cursor: pointer;
+    }
 }
