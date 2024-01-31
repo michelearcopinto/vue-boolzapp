@@ -329,7 +329,6 @@ const app = createApp({
                         status: 'received'
                     })
 
-                    console.log('Il mittente sta scrivendo');
                     this.isWriting = !this.isWriting;
 
                 }, this.getRandomNumber(1500, 3500).toFixed(0));
@@ -337,8 +336,6 @@ const app = createApp({
             }
 
             this.newMessage = '';
-            console.log(this.getRandomNumber(0, 99));
-            console.log(this.answerChance);
         },
         getRandomNumber(min, max) {
 
