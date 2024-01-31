@@ -17,7 +17,8 @@ figure img {
     width: 50px;
 }
 
-i:hover {
+i:hover,
+.chat-box:hover {
     cursor: pointer;
 }
 
@@ -43,14 +44,40 @@ i:hover {
 
 #chat-background {
     background-image: url('../img/mine.jpg');
-    height: calc(100% - 66px);
+    height: calc(100% - 132px);
+    position: relative;
 }
 
 #last-message-contacts {
-
     text-wrap: nowrap;
     text-overflow: ellipsis;
     max-width: 250px;
     overflow: hidden;
+}
 
+.message-box {
+    position: relative;
+    width: 45%;
+}
+
+.message-box span:nth-child(2) {
+    font-size: 12px;
+    position: absolute;
+    right: 5px;
+    bottom: 2px;
+}
+
+.message-box-sent {
+    background-color: #D5F9BA;
+    margin-left: auto;
+}
+
+.message-box-received {
+    background-color: #FFFFFF;
+    margin-right: auto;
+}
+
+#text-area {
+    height: 66px;
+    background-color: #F3EEEA;
 }

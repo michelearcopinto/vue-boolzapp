@@ -3,6 +3,7 @@ const { createApp } = Vue
 const app = createApp({
     data() {
         return {
+            currentChat: 0,
             contacts: [
                 {
                     name: 'Michele',
@@ -180,6 +181,10 @@ const app = createApp({
             let shortTime = timeArray.slice(0, 2).join(':');
 
             return shortTime
+        },
+        setChat(index) {
+
+            this.currentChat = index;
         }
     }
 }).mount('#app')
