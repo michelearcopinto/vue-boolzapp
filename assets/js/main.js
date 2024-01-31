@@ -5,6 +5,7 @@ const app = createApp({
         return {
             currentChat: 0,
             answerChance: 0,
+            isWriting: false,
             newMessage: '',
             contacts: [
                 {
@@ -313,16 +314,26 @@ const app = createApp({
                 status: 'sent'
             })
 
-            this.answerChance = this.getRandomNumber(0, 1).toFixed(0);
+            this.answerChance = this.getRandomNumber(0, 3).toFixed(0);
 
-            if (this.answerChance == 0) {
+            if (this.answerChance > 0) {
 
-                this.contacts[this.currentChat].messages.push({
+                this.isWriting = !this.isWriting;
 
-                    date: `${ore}:${minuti}`,
-                    message: this.answers[this.getRandomNumber(0, 99).toFixed(0)],
-                    status: 'received'
-                })
+                setTimeout(() => {
+
+                    this.contacts[this.currentChat].messages.push({
+
+                        date: `${ore}:${minuti}`,
+                        message: this.answers[this.getRandomNumber(0, 99).toFixed(0)],
+                        status: 'received'
+                    })
+
+                    console.log('Il mittente sta scrivendo');
+                    this.isWriting = !this.isWriting;
+
+                }, this.getRandomNumber(1500, 3500).toFixed(0));
+
             }
 
             this.newMessage = '';
