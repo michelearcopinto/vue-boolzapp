@@ -515,8 +515,9 @@ const app = createApp({
 
             } else {
 
-                let giorno = new Date().getDay();
+                let giorno = new Date().getDate();
                 let mese = new Date().getMonth();
+                mese = +mese + 1;
                 let anno = new Date().getFullYear();
 
                 giorno = +giorno < 10 ? '0' + giorno : giorno
