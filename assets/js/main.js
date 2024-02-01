@@ -18,6 +18,7 @@ const app = createApp({
             lastRecordedDateArray: [],
             lengthArray: 0,
             isIncremento: null,
+            incrementoDate: null,
             statoChat: false,
             contacts: [
                 {
@@ -335,6 +336,24 @@ const app = createApp({
                 console.log("l'array è uguale")
             }
         },
+        datesArray(newValue, oldValue) {
+
+            if (newValue > oldValue) {
+
+                this.incrementoDate = true;
+                console.log("l'array è aumentato")
+
+            } else if (newValue < oldValue) {
+
+                this.incrementoDate = false;
+                console.log("l'array è diminuito")
+
+            } else {
+
+                this.incrementoDate = null;
+                console.log("l'array è uguale")
+            }
+        },
         currentChat(newValue, oldValue) {
 
             if (newValue !== oldValue) {
@@ -374,43 +393,6 @@ const app = createApp({
         setStatoChat() {
 
             this.statoChat = false;
-        },
-        pushMessage() {
-
-            if (this.newMessage === '' || this.newMessage.trim().length === 0) {
-
-                this.newMessage = '';
-                return
-            }
-
-            let ore = new Date().getHours();
-            let minuti = new Date().getMinutes();
-
-            ore = +ore < 10 ? '0' + ore : ore
-            minuti = +minuti < 10 ? '0' + minuti : minuti
-
-            this.contacts[this.currentChat].messages.push({
-
-                date: `${ore}:${minuti}`,
-                message: this.newMessage,
-                status: 'sent'
-            })
-
-            this.newMessage = '';
-
-            this.isWriting = !this.isWriting;
-
-            setTimeout(() => {
-
-                this.contacts[this.currentChat].messages.push({
-                    date: `${ore}:${minuti}`,
-                    message: this.answers[this.getRandomNumber(0, 99)],
-                    status: 'received'
-                });
-
-                this.isWriting = !this.isWriting;
-
-            }, this.getRandomNumber(1500, 3500));
         },
         getRandomNumber(min, max) {
 
@@ -529,22 +511,13 @@ const app = createApp({
 
                 console.log(this.lastAccesses)
 
-                if (this.receivedMessagesArray.length === 0) {
-
-
-                    console.log('messaggi ricevuti cancellati')
-
-                    this.datesArray.splice(this.currentChat, 0, this.lastRecordedDateStaticForSure);
-                    console.log(this.datesArray);
-
-                    return `Ultimo accesso alle ${this.lastAccesses[this.currentChat]}`
-
-                } else if (this.statoChat === true) {
+                if (this.statoChat === true) {
 
                     console.log('condizione chat true')
 
                     this.isIncremento = true;
                     console.log(this.isIncremento)
+
                     return `Ultimo accesso alle ${this.lastAccesses[this.currentChat]}`;
 
                 } else if (this.statoChat === false) {
@@ -575,12 +548,52 @@ const app = createApp({
         },
         deleteMessage(index) {
 
-            this.lastRecordedDateStaticForSure = this.lastAccesses[this.currentChat]
+            this.lastRecordedDateStaticForSure = this.lastAccesses[this.currentChat];
+
 
             this.contacts[this.currentChat].messages.splice(index, 1);
 
             console.log(this.datesArray)
             this.currentBox = null;
+        },
+        pushMessage() {
+
+            if (this.newMessage === '' || this.newMessage.trim().length === 0) {
+
+                this.newMessage = '';
+                return
+            }
+
+            let ore = new Date().getHours();
+            let minuti = new Date().getMinutes();
+
+            ore = +ore < 10 ? '0' + ore : ore
+            minuti = +minuti < 10 ? '0' + minuti : minuti
+
+            this.contacts[this.currentChat].messages.push({
+
+                date: `${ore}:${minuti}`,
+                message: this.newMessage,
+                status: 'sent'
+            })
+
+            this.newMessage = '';
+
+            this.lastAccesses[this.currentChat] = `${ore}:${minuti}`
+
+            this.isWriting = !this.isWriting;
+
+            setTimeout(() => {
+
+                this.contacts[this.currentChat].messages.push({
+                    date: `${ore}:${minuti}`,
+                    message: this.answers[this.getRandomNumber(0, 99)],
+                    status: 'received'
+                });
+
+                this.isWriting = !this.isWriting;
+
+            }, this.getRandomNumber(1500, 3500));
         },
         infosMessage(index) {
 
