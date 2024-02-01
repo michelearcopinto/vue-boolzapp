@@ -17,6 +17,7 @@ const app = createApp({
             lastRecordedDateStaticForSure: '',
             lengthArray: 0,
             isIncremento: null,
+            statoChat: false,
             contacts: [
                 {
                     name: 'Michele',
@@ -331,6 +332,24 @@ const app = createApp({
                 console.log("l'array non è cambiato")
             }
         },
+        currentChat(newValue, oldValue) {
+
+            if (newValue !== oldValue) {
+
+                this.statoChat = true;
+                console.log(this.statoChat);
+
+                setTimeout(() => {
+
+                    this.setStatoChat();
+                    console.log(this.statoChat);
+                }, 500);
+
+            } else {
+
+                this.statoChat = false;
+            }
+        },
     },
     methods: {
         displayLastDate(date) {
@@ -353,6 +372,10 @@ const app = createApp({
         setChat(index) {
 
             this.currentChat = index;
+        },
+        setStatoChat() {
+
+            this.statoChat = false;
         },
         pushMessage() {
 
@@ -474,15 +497,13 @@ const app = createApp({
         },
         isWritingCheck() {
 
-            console.log(this.lengthArray)
-
             this.receivedMessagesArray = this.contacts[this.currentChat].messages.filter(function (element) {
                 return element.status === 'received';
             });
 
             this.lengthArray = this.receivedMessagesArray.length
 
-            console.log(this.lengthArray)
+            console.log(this.statoChat)
 
             if (this.isWriting === false) {
 
@@ -490,16 +511,20 @@ const app = createApp({
 
                     return `Ultimo accesso alle ${this.displayLastDate(this.lastRecordedDateStatic)}`
 
-                } else if (this.isIncremento === false) {
+                } else if (this.statoChat === false) {
 
-                    return `Ultimo accesso alle ${this.displayLastDate(this.lastRecordedDateStaticForSure)}`
 
-                } else {
+                    if (this.isIncremento === false) {
+
+                        console.log(this.lastRecordedDateStaticForSure)
+                        return `Ultimo accesso alle ${this.displayLastDate(this.lastRecordedDateStaticForSure)}`
+                    }
 
                     let lastReceivedDate = this.receivedMessagesArray[this.receivedMessagesArray.length - 1].date;
                     this.lastRecordedDate = lastReceivedDate;
 
                     return `Ultimo accesso alle ${this.displayLastDate(lastReceivedDate)}`;
+
                 }
 
             } else {
@@ -509,10 +534,13 @@ const app = createApp({
         },
         deleteMessage(index) {
 
-            if (this.receivedMessagesArray.length === 1) {
+            setTimeout(() => {
 
-                this.lastRecordedDateStatic = this.lastRecordedDate;
-            }
+                if (this.receivedMessagesArray.length === 1) {
+
+                    this.lastRecordedDateStatic = this.lastRecordedDate;
+                }
+            }, 550);
 
             console.log(this.lastRecordedDateStaticForSure)
             this.lastRecordedDateStaticForSure = this.receivedMessagesArray[this.receivedMessagesArray.length - 1].date;
