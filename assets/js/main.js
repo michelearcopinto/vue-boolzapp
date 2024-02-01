@@ -575,7 +575,7 @@ const app = createApp({
         },
         deleteMessage(index) {
 
-            this.lastRecordedDateStaticForSure = this.datesArray[this.currentChat]
+            this.lastRecordedDateStaticForSure = this.lastAccesses[this.currentChat]
 
             this.contacts[this.currentChat].messages.splice(index, 1);
 
