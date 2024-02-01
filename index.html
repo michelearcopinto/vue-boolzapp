@@ -14,7 +14,7 @@
 
 <body>
     <div id="app" class="pt-5">
-        <div id="header-propic" class="container border shadow-lg rounded-3 overflow-hidden position-relative">
+        <div id="header-propic" class="container border shadow-lg rounded-3 position-relative overflow-hidden">
 
             <div class="row">
 
@@ -131,17 +131,34 @@
                                     <span @click="copyMessage(index)" class="user-select-none">Copia messaggio</span>
                                     <span @click="deleteMessage(index)" class="user-select-none">Elimina
                                         messaggio</span>
-                                    <span @click="" class="user-select-none">Info messaggio</span>
+                                    <div class="position-relative">
+                                        <span @click="toggleInfoBox()" class="user-select-none">Info messaggio</span>
+                                        <div id="infos-message" class="font-monospace flex-column"
+                                            :class="infoBoxActive === true ? 'd-flex' : 'd-none'">
+                                            <hr>
+                                            <h4 class="text-center mb-1 mt-1">Infos</h4>
+                                            <span>{{`Author: ${infosMessage(index)}`}}</span>
+                                            <span>{{`date: ${element.date}`}}</span>
+                                            <span>{{`status: ${element.status}`}}</span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-
-
+                        <div id="emoji-container" :class="emojiContainerActive === true ? 'row' : 'd-none'"
+                            class="justify-content-between p-2 rounded-3">
+                            <span v-for="(element, index) in emojiArray" @click="insertEmoji(index)"
+                                class="fs-1 px-0 user-select-none">{{element.emoji}}</span>
+                        </div>
                     </div>
 
                     <!-- Text area -->
                     <div id="text-area" class="d-flex align-items-center gap-4 px-4">
-                        <i class="bi bi-emoji-smile-upside-down fs-3"></i>
+                        <i v-if="emojiContainerActive === false" @click="toggleEmojiContainer()"
+                            class="bi bi-emoji-smile-upside-down fs-3"></i>
+                        <i v-else="" @click="toggleEmojiContainer()"
+                            class="bi bi-emoji-smile-upside-down-fill fs-3"></i>
+
                         <div class="input-group p-1">
                             <input id="inputMessage" v-model="newMessage" @keydown.enter="pushMessage()" type="text"
                                 class="form-control shadow-none" placeholder="Scrivi un messaggio" aria-label="search"

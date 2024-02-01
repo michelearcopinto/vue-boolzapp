@@ -127,6 +127,25 @@ i:hover,
     display: none;
 }
 
+#emoji-container {
+    background-color: #3a3a3aee;
+    position: absolute;
+    width: 250px;
+    aspect-ratio: 1;
+    bottom: 10px;
+    left: 20px;
+    z-index: 2;
+}
+
+#emoji-container span {
+    width: calc(100% / 5);
+}
+
+#emoji-container span:hover {
+    opacity: 75%;
+    cursor: pointer;
+}
+
 @media screen and (max-width: 1399px) {
 
     .message-box {

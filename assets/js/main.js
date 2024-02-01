@@ -7,6 +7,8 @@ const app = createApp({
             isWriting: false,
             leftMenu: false,
             currentBox: null,
+            infoBoxActive: false,
+            emojiContainerActive: false,
             newMessage: '',
             searchWord: '',
             lastRecordedDate: '',
@@ -274,6 +276,33 @@ const app = createApp({
                 "Non ho tempo per questo.",
                 "Voglio andare a casa.",
                 "Non so cosa dire."
+            ],
+            emojiArray: [
+                { emoji: '😀', name: 'Faccina sorridente' },
+                { emoji: '😍', name: 'Faccina con occhi a cuore' },
+                { emoji: '🎉', name: 'Festa' },
+                { emoji: '🌟', name: 'Stella brillante' },
+                { emoji: '🍕', name: 'Pizza' },
+                { emoji: '🚀', name: 'Razzo' },
+                { emoji: '🌈', name: 'Arcobaleno' },
+                { emoji: '🎈', name: 'Palloncino' },
+                { emoji: '🌺', name: 'Fiore hawaiano' },
+                { emoji: '📚', name: 'Libri' },
+                { emoji: '🎸', name: 'Chitarra' },
+                { emoji: '🍔', name: 'Hamburger' },
+                { emoji: '🏖️', name: 'Spiaggia con ombrellone' },
+                { emoji: '🎧', name: 'Cuffie' },
+                { emoji: '🐱', name: 'Gatto' },
+                { emoji: '🍦', name: 'Gelato' },
+                { emoji: '🚗', name: 'Auto' },
+                { emoji: '⛰️', name: 'Montagna' },
+                { emoji: '🌍', name: 'Mondo' },
+                { emoji: '🚲', name: 'Bicicletta' },
+                { emoji: '🏆', name: 'Trofeo' },
+                { emoji: '💡', name: 'Lampadina' },
+                { emoji: '🎓', name: 'Cappello da laurea' },
+                { emoji: '🍎', name: 'Mela rossa' },
+                { emoji: '🎨', name: 'Pennello e tavolozza' },
             ]
         }
     },
@@ -437,7 +466,29 @@ const app = createApp({
 
                 return 'Sta scrivendo...'
             }
+        },
+        infosMessage(index) {
 
-        }
+            if (this.contacts[this.currentChat].messages[index].status === 'sent') {
+
+                return 'Tu';
+
+            } else {
+
+                return this.contacts[this.currentChat].name;
+            }
+        },
+        toggleInfoBox() {
+
+            this.infoBoxActive = !this.infoBoxActive;
+        },
+        insertEmoji(index) {
+
+            this.newMessage += this.emojiArray[index].emoji;
+        },
+        toggleEmojiContainer() {
+
+            this.emojiContainerActive = !this.emojiContainerActive;
+        },
     }
 }).mount('#app')
