@@ -65,7 +65,8 @@
 
                     <!-- Contacts -->
                     <div id="overflow-contacts" class="overflow-auto">
-                        <div v-for="(element, index) in contacts" @click="setChat(index); closeLeftMenu()"
+                        <div v-for="(element, index) in contacts"
+                            @click="setChat(index); closeLeftMenu(); currentBox = null"
                             v-show="element.name.toLowerCase().trim().includes(searchWord.toLowerCase().trim())"
                             :class="index === currentChat ? '' : 'bg-white'">
                             <div class="border-bottom chat-box">

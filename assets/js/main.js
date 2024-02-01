@@ -525,7 +525,6 @@ const app = createApp({
 
                 return this.fullDate = `${giorno}/${mese}/${anno}`
             }
-
         }
     }
 }).mount('#app')
