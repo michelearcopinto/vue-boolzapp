@@ -390,14 +390,17 @@ const app = createApp({
 
             if (this.currentBox === null) {
 
+                console.log(this.currentBox)
                 this.currentBox = index;
 
-            } else if (this.currentBox = index) {
+            } else if (this.currentBox === index) {
 
+                console.log(this.currentBox)
                 this.currentBox = null;
 
             } else {
 
+                console.log(this.currentBox)
                 this.currentBox = index;
             }
         },
