@@ -278,31 +278,31 @@ const app = createApp({
                 "Non so cosa dire."
             ],
             emojiArray: [
-                { emoji: '😀', name: 'Faccina sorridente' },
-                { emoji: '😍', name: 'Faccina con occhi a cuore' },
-                { emoji: '🎉', name: 'Festa' },
-                { emoji: '🌟', name: 'Stella brillante' },
-                { emoji: '🍕', name: 'Pizza' },
-                { emoji: '🚀', name: 'Razzo' },
-                { emoji: '🌈', name: 'Arcobaleno' },
-                { emoji: '🎈', name: 'Palloncino' },
-                { emoji: '🌺', name: 'Fiore hawaiano' },
-                { emoji: '📚', name: 'Libri' },
-                { emoji: '🎸', name: 'Chitarra' },
-                { emoji: '🍔', name: 'Hamburger' },
-                { emoji: '🏖️', name: 'Spiaggia con ombrellone' },
-                { emoji: '🎧', name: 'Cuffie' },
-                { emoji: '🐱', name: 'Gatto' },
-                { emoji: '🍦', name: 'Gelato' },
-                { emoji: '🚗', name: 'Auto' },
-                { emoji: '⛰️', name: 'Montagna' },
-                { emoji: '🌍', name: 'Mondo' },
-                { emoji: '🚲', name: 'Bicicletta' },
-                { emoji: '🏆', name: 'Trofeo' },
-                { emoji: '💡', name: 'Lampadina' },
-                { emoji: '🎓', name: 'Cappello da laurea' },
-                { emoji: '🍎', name: 'Mela rossa' },
-                { emoji: '🎨', name: 'Pennello e tavolozza' },
+                { emoji: '😃', name: 'Felice' },
+                { emoji: '😎', name: 'Sorpreso' },
+                { emoji: '😢', name: 'Triste' },
+                { emoji: '😂', name: 'Divertito' },
+                { emoji: '😒', name: 'Sarcasmo' },
+                { emoji: '😍', name: 'Innamorato' },
+                { emoji: '😴', name: 'Stanco' },
+                { emoji: '😜', name: 'Scherzoso' },
+                { emoji: '😇', name: 'Innocente' },
+                { emoji: '😳', name: 'Impacciato' },
+                { emoji: '🙄', name: 'Annoiato' },
+                { emoji: '😅', name: 'Sollievo' },
+                { emoji: '😤', name: 'Arrabbiato' },
+                { emoji: '😋', name: 'Deliziato' },
+                { emoji: '😑', name: 'Esasperato' },
+                { emoji: '😷', name: 'Malato' },
+                { emoji: '😏', name: 'Sorridendo con fare sospetto' },
+                { emoji: '😬', name: 'Nervoso' },
+                { emoji: '🤔', name: 'Pensieroso' },
+                { emoji: '😱', name: 'Spaventato' },
+                { emoji: '😄', name: 'Gioioso' },
+                { emoji: '😕', name: 'Perplesso' },
+                { emoji: '😖', name: 'Contrariato' },
+                { emoji: '😘', name: 'Bacio' },
+                { emoji: '😪', name: 'Sonnolento' }
             ]
         }
     },
@@ -333,8 +333,10 @@ const app = createApp({
         },
         pushMessage() {
 
-            if (this.newMessage === '') {
+            if (this.newMessage === '' || this.newMessage.trim().length === 0) {
 
+                console.log('variabile non valida')
+                this.newMessage = '';
                 return
             }
 
@@ -477,10 +479,6 @@ const app = createApp({
 
                 return this.contacts[this.currentChat].name;
             }
-        },
-        toggleInfoBox() {
-
-            this.infoBoxActive = !this.infoBoxActive;
         },
         insertEmoji(index) {
 

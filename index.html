@@ -125,14 +125,16 @@
                                 :class="element.status === 'sent' ? 'message-box-sent' : 'message-box-received'">
                                 <span class="pt-2 p-3 pb-4 pe-4">{{element.message}}</span>
                                 <span class="opacity-50 user-select-none">{{displayLastDate(element.date)}}</span>
-                                <i @click="setDisplayBox(index)" class="bi bi-chevron-down fs-6"></i>
+                                <i @click="setDisplayBox(index); infoBoxActive = false"
+                                    class="bi bi-chevron-down fs-6"></i>
                                 <div class="flex-column gap-2 ps-4 p-3 rounded-1 shadow-lg message-dropdown"
                                     :class="currentBox === index ? 'd-flex' : 'd-none'">
                                     <span @click="copyMessage(index)" class="user-select-none">Copia messaggio</span>
                                     <span @click="deleteMessage(index)" class="user-select-none">Elimina
                                         messaggio</span>
                                     <div class="position-relative">
-                                        <span @click="toggleInfoBox()" class="user-select-none">Info messaggio</span>
+                                        <span @click="infoBoxActive = true" class="user-select-none">Info
+                                            messaggio</span>
                                         <div id="infos-message" class="font-monospace flex-column"
                                             :class="infoBoxActive === true ? 'd-flex' : 'd-none'">
                                             <hr>
