@@ -13,6 +13,10 @@ const app = createApp({
             newMessage: '',
             searchWord: '',
             lastRecordedDate: '',
+            lastRecordedDateStatic: '',
+            lastRecordedDateStaticForSure: '',
+            lengthArray: 0,
+            isIncremento: null,
             contacts: [
                 {
                     name: 'Michele',
@@ -304,11 +308,29 @@ const app = createApp({
                 { emoji: '😖', name: 'Contrariato' },
                 { emoji: '😘', name: 'Bacio' },
                 { emoji: '😪', name: 'Sonnolento' }
-            ]
+            ],
+            receivedMessagesArray: null
         }
     },
-    created() {
+    watch: {
+        lengthArray(newValue, oldValue) {
 
+            if (newValue > oldValue) {
+
+                this.isIncremento = true;
+                console.log("l'array è aumenato")
+
+            } else if (newValue < oldValue) {
+
+                this.isIncremento = false;
+                console.log("l'array è diminuito")
+
+            } else {
+
+                this.isIncremento = null;
+                console.log("l'array non è cambiato")
+            }
+        },
     },
     methods: {
         displayLastDate(date) {
@@ -336,7 +358,6 @@ const app = createApp({
 
             if (this.newMessage === '' || this.newMessage.trim().length === 0) {
 
-                console.log('variabile non valida')
                 this.newMessage = '';
                 return
             }
@@ -390,17 +411,14 @@ const app = createApp({
 
             if (this.currentBox === null) {
 
-                console.log(this.currentBox)
                 this.currentBox = index;
 
             } else if (this.currentBox === index) {
 
-                console.log(this.currentBox)
                 this.currentBox = null;
 
             } else {
 
-                console.log(this.currentBox)
                 this.currentBox = index;
             }
         },
@@ -415,12 +433,6 @@ const app = createApp({
 
                 alert('Messaggio copiato!')
             }, 1);
-        },
-        deleteMessage(index) {
-
-            this.contacts[this.currentChat].messages.splice(index, 1);
-
-            this.currentBox = null;
         },
         lastMessageCheck(index) {
 
@@ -462,20 +474,31 @@ const app = createApp({
         },
         isWritingCheck() {
 
-            let receivedMessages = this.contacts[this.currentChat].messages.filter(function (element) {
+            console.log(this.lengthArray)
+
+            this.receivedMessagesArray = this.contacts[this.currentChat].messages.filter(function (element) {
                 return element.status === 'received';
             });
 
+            this.lengthArray = this.receivedMessagesArray.length
+
+            console.log(this.lengthArray)
+
             if (this.isWriting === false) {
 
-                if (receivedMessages.length === 0) {
+                if (this.receivedMessagesArray.length === 0) {
 
-                    return `Ultimo accesso alle ${this.displayLastDate(this.lastRecordedDate)}`
+                    return `Ultimo accesso alle ${this.displayLastDate(this.lastRecordedDateStatic)}`
+
+                } else if (this.isIncremento === false) {
+
+                    return `Ultimo accesso alle ${this.displayLastDate(this.lastRecordedDateStaticForSure)}`
 
                 } else {
 
-                    let lastReceivedDate = receivedMessages[receivedMessages.length - 1].date;
+                    let lastReceivedDate = this.receivedMessagesArray[this.receivedMessagesArray.length - 1].date;
                     this.lastRecordedDate = lastReceivedDate;
+
                     return `Ultimo accesso alle ${this.displayLastDate(lastReceivedDate)}`;
                 }
 
@@ -483,6 +506,20 @@ const app = createApp({
 
                 return 'Sta scrivendo...'
             }
+        },
+        deleteMessage(index) {
+
+            if (this.receivedMessagesArray.length === 1) {
+
+                this.lastRecordedDateStatic = this.lastRecordedDate;
+            }
+
+            console.log(this.lastRecordedDateStaticForSure)
+            this.lastRecordedDateStaticForSure = this.receivedMessagesArray[this.receivedMessagesArray.length - 1].date;
+
+            this.contacts[this.currentChat].messages.splice(index, 1);
+
+            this.currentBox = null;
         },
         infosMessage(index) {
 
@@ -522,7 +559,6 @@ const app = createApp({
 
                 giorno = +giorno < 10 ? '0' + giorno : giorno
                 mese = +mese < 10 ? '0' + mese : mese
-                console.log(giorno, mese, anno)
 
                 return this.fullDate = `${giorno}/${mese}/${anno}`
             }
