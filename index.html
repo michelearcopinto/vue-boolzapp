@@ -133,14 +133,15 @@
                                     <span @click="deleteMessage(index)" class="user-select-none">Elimina
                                         messaggio</span>
                                     <div class="position-relative">
-                                        <span @click="infoBoxActive = true" class="user-select-none">Info
+                                        <span @click="toggleinfoBoxActive()" class="user-select-none">Info
                                             messaggio</span>
-                                        <div id="infos-message" class="font-monospace flex-column"
+                                        <div @click="setDisplayBox(index)" id="infos-message"
+                                            class="font-monospace flex-column"
                                             :class="infoBoxActive === true ? 'd-flex' : 'd-none'">
                                             <hr>
                                             <h4 class="text-center mb-1 mt-1">Infos</h4>
                                             <span>{{`Author: ${infosMessage(index)}`}}</span>
-                                            <span>{{`date: ${element.date}`}}</span>
+                                            <span>{{`date: ${createDate(index)} ${element.date}`}}</span>
                                             <span>{{`status: ${element.status}`}}</span>
                                         </div>
                                     </div>
@@ -162,9 +163,10 @@
                             class="bi bi-emoji-smile-upside-down-fill fs-3"></i>
 
                         <div class="input-group p-1">
-                            <input id="inputMessage" v-model="newMessage" @keydown.enter="pushMessage()" type="text"
-                                class="form-control shadow-none" placeholder="Scrivi un messaggio" aria-label="search"
-                                aria-describedby="basic-addon1" :class="leftMenu === true ? 'pe-none' : ''">
+                            <input id="inputMessage" v-model="newMessage" @keydown.enter="pushMessage()"
+                                @keydown.ctrl="toggleEmojiContainer()" type="text" class="form-control shadow-none"
+                                placeholder="Scrivi un messaggio" aria-label="search" aria-describedby="basic-addon1"
+                                :class="leftMenu === true ? 'pe-none' : ''">
                         </div>
                         <i v-if="newMessage === ''" class="bi bi-mic fs-3"></i>
                         <i v-else @click="pushMessage()" class="bi bi-send fs-3"></i>

@@ -9,6 +9,7 @@ const app = createApp({
             currentBox: null,
             infoBoxActive: false,
             emojiContainerActive: false,
+            fullDate: null,
             newMessage: '',
             searchWord: '',
             lastRecordedDate: '',
@@ -387,7 +388,18 @@ const app = createApp({
         },
         setDisplayBox(index) {
 
-            this.currentBox === null ? this.currentBox = index : this.currentBox = null;
+            if (this.currentBox === null) {
+
+                this.currentBox = index;
+
+            } else if (this.currentBox = index) {
+
+                this.currentBox = null;
+
+            } else {
+
+                this.currentBox = index;
+            }
         },
         copyMessage(index) {
 
@@ -488,5 +500,29 @@ const app = createApp({
 
             this.emojiContainerActive = !this.emojiContainerActive;
         },
+        toggleinfoBoxActive() {
+
+            this.infoBoxActive = !this.infoBoxActive;
+        },
+        createDate(index) {
+
+            if (this.contacts[this.currentChat].messages[index].date.includes('/')) {
+
+                return '';
+
+            } else {
+
+                let giorno = new Date().getDay();
+                let mese = new Date().getMonth();
+                let anno = new Date().getFullYear();
+
+                giorno = +giorno < 10 ? '0' + giorno : giorno
+                mese = +mese < 10 ? '0' + mese : mese
+                console.log(giorno, mese, anno)
+
+                return this.fullDate = `${giorno}/${mese}/${anno}`
+            }
+
+        }
     }
 }).mount('#app')
