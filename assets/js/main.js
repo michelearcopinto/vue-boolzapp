@@ -15,6 +15,7 @@ const app = createApp({
             lastRecordedDate: '',
             lastRecordedDateStatic: '',
             lastRecordedDateStaticForSure: '',
+            lastRecordedDateArray: [],
             lengthArray: 0,
             isIncremento: null,
             statoChat: false,
@@ -310,7 +311,9 @@ const app = createApp({
                 { emoji: '😘', name: 'Bacio' },
                 { emoji: '😪', name: 'Sonnolento' }
             ],
-            receivedMessagesArray: null
+            receivedMessagesArray: null,
+            datesArray: [],
+            lastAccesses: []
         }
     },
     watch: {
@@ -319,7 +322,7 @@ const app = createApp({
             if (newValue > oldValue) {
 
                 this.isIncremento = true;
-                console.log("l'array è aumenato")
+                console.log("l'array è aumentato")
 
             } else if (newValue < oldValue) {
 
@@ -329,7 +332,7 @@ const app = createApp({
             } else {
 
                 this.isIncremento = null;
-                console.log("l'array non è cambiato")
+                console.log("l'array è uguale")
             }
         },
         currentChat(newValue, oldValue) {
@@ -337,17 +340,12 @@ const app = createApp({
             if (newValue !== oldValue) {
 
                 this.statoChat = true;
-                console.log(this.statoChat);
 
                 setTimeout(() => {
 
                     this.setStatoChat();
-                    console.log(this.statoChat);
                 }, 500);
 
-            } else {
-
-                this.statoChat = false;
             }
         },
     },
@@ -502,29 +500,72 @@ const app = createApp({
             });
 
             this.lengthArray = this.receivedMessagesArray.length
+            console.log(this.receivedMessagesArray.length)
 
-            console.log(this.statoChat)
+
+
+            let receivedMessagesArrayGlobal = [];
+
+            this.contacts.forEach(element => {
+                const filteredContacts = element.messages.filter(message => message.status === 'received');
+
+                if (filteredContacts.length > 0) {
+                    receivedMessagesArrayGlobal.push(this.displayLastDate(filteredContacts[filteredContacts.length - 1].date));
+                }
+            });
+
+            this.datesArray = receivedMessagesArrayGlobal
+
+
+            console.log(this.datesArray);
+
 
             if (this.isWriting === false) {
 
+                if (this.lastAccesses.length === 0) {
+
+                    this.lastAccesses = this.datesArray
+                }
+
+                console.log(this.lastAccesses)
+
                 if (this.receivedMessagesArray.length === 0) {
 
-                    return `Ultimo accesso alle ${this.displayLastDate(this.lastRecordedDateStatic)}`
+
+                    console.log('messaggi ricevuti cancellati')
+
+                    this.datesArray.splice(this.currentChat, 0, this.lastRecordedDateStaticForSure);
+                    console.log(this.datesArray);
+
+                    return `Ultimo accesso alle ${this.lastAccesses[this.currentChat]}`
+
+                } else if (this.statoChat === true) {
+
+                    console.log('condizione chat true')
+
+                    this.isIncremento = true;
+                    console.log(this.isIncremento)
+                    return `Ultimo accesso alle ${this.lastAccesses[this.currentChat]}`;
 
                 } else if (this.statoChat === false) {
 
 
                     if (this.isIncremento === false) {
 
-                        console.log(this.lastRecordedDateStaticForSure)
-                        return `Ultimo accesso alle ${this.displayLastDate(this.lastRecordedDateStaticForSure)}`
+                        console.log('condizione cancellare')
+
+                        this.lastAccesses[this.currentChat] = this.lastRecordedDateStaticForSure;
+
+                        return `Ultimo accesso alle ${this.lastAccesses[this.currentChat]}`;
                     }
 
-                    let lastReceivedDate = this.receivedMessagesArray[this.receivedMessagesArray.length - 1].date;
-                    this.lastRecordedDate = lastReceivedDate;
+                    console.log('condizione chat false')
+                    return `Ultimo accesso alle ${this.lastAccesses[this.currentChat]}`;
 
-                    return `Ultimo accesso alle ${this.displayLastDate(lastReceivedDate)}`;
+                } else {
 
+                    console.log('condizione sconosciuta')
+                    return `Ultimo accesso alle ${this.lastAccesses[this.currentChat]}`;
                 }
 
             } else {
@@ -534,19 +575,11 @@ const app = createApp({
         },
         deleteMessage(index) {
 
-            setTimeout(() => {
-
-                if (this.receivedMessagesArray.length === 1) {
-
-                    this.lastRecordedDateStatic = this.lastRecordedDate;
-                }
-            }, 550);
-
-            console.log(this.lastRecordedDateStaticForSure)
-            this.lastRecordedDateStaticForSure = this.receivedMessagesArray[this.receivedMessagesArray.length - 1].date;
+            this.lastRecordedDateStaticForSure = this.datesArray[this.currentChat]
 
             this.contacts[this.currentChat].messages.splice(index, 1);
 
+            console.log(this.datesArray)
             this.currentBox = null;
         },
         infosMessage(index) {
